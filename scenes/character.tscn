@@ -1,0 +1,87 @@
+[gd_scene load_steps=8 format=3 uid="uid://b38mmured4p34"]
+
+[ext_resource type="Script" path="res://scenes/character.gd" id="1_n1eei"]
+[ext_resource type="Texture2D" uid="uid://b18bnuf7b052i" path="res://assets/character.png" id="1_usxkj"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jtn4q"]
+size = Vector2(15, 7)
+
+[sub_resource type="Animation" id="Animation_wyooj"]
+length = 0.001
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Texture:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1.07177),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_m7wtv"]
+resource_name = "idle"
+length = 0.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Texture:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_ln40y"]
+resource_name = "walk"
+length = 0.8
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Texture:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [1, 2, 3, 2]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_iw81s"]
+_data = {
+"RESET": SubResource("Animation_wyooj"),
+"idle": SubResource("Animation_m7wtv"),
+"walk": SubResource("Animation_ln40y")
+}
+
+[node name="Character" type="CharacterBody2D" node_paths=PackedStringArray("sprite", "animation")]
+script = ExtResource("1_n1eei")
+sprite = NodePath("Texture")
+animation = NodePath("AnimationPlayer")
+
+[node name="Texture" type="Sprite2D" parent="."]
+texture = ExtResource("1_usxkj")
+hframes = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1, 15)
+shape = SubResource("RectangleShape2D_jtn4q")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_iw81s")
+}
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position_smoothing_speed = 15.0
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
